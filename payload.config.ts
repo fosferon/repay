@@ -1,4 +1,5 @@
 import { mongooseAdapter } from "@payloadcms/db-mongodb";
+import { postgresAdapter } from "@payloadcms/db-postgres";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { viteBundler } from "@payloadcms/bundler-vite";
 import { buildConfig } from "payload/config";
@@ -18,8 +19,15 @@ export default buildConfig({
     }),
   },
   editor: lexicalEditor({}),
-  db: mongooseAdapter({
-    url: process.env.MONGODB_URI ?? false,
+  // db: mongooseAdapter({
+  //   url: process.env.MONGODB_URI ?? false,
+  // }),
+  db: postgresAdapter({
+    // Postgres-specific arguments go here.
+    // `pool` is required.
+    pool: {
+      connectionString: process.env.DATABASE_URI,
+    },
   }),
   collections: [Users],
   typescript: {
